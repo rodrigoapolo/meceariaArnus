@@ -19,12 +19,6 @@ public class FornecedorService {
     CategoriaFornecedorRespository categoriaFornecedorRespository;
 
     public FornecedorDTO salvar(FornecedorDTO fornecedorDTO){
-/*        verificarFornecedor(fornecedorDTO);
-
-        FornecedorModel fornecedorModel = new FornecedorModel();
-        criarFornecedor(fornecedorModel, fornecedorDTO);
-
-        fornecedorRespository.save(fornecedorModel);*/
         return update(null, fornecedorDTO);
     }
 

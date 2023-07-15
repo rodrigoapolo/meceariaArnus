@@ -23,18 +23,6 @@ public class ProdutoService {
 
 
     public ProdutoDTO salvar(ProdutoDTO produtoDTO){
-/*
-        ProdutoModel produtoModel = new ProdutoModel();
-        BeanUtils.copyProperties(produtoDTO, produtoModel);
-
-        verificarProduto(produtoDTO);
-
-        produtoModel.setCategoriaProdutoModel(categoriaProdutoRespository.findById(produtoDTO.getCategoriaProduto()).get());
-        produtoModel.setFornecedorModel(fornecedorRespository.findById(produtoDTO.getFornecedor()).get());
-
-        produtoRespository.save(produtoModel);
-*/
-
         return update(null, produtoDTO);
     }
 

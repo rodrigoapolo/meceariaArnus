@@ -17,10 +17,6 @@ public class ClienteService {
     ClienteRespository clienteRespository;
 
     public ClienteDTO salvar(ClienteDTO clienteDTO){
-/*        ClienteModel clienteModel = new ClienteModel();
-        criarCliente(clienteModel, clienteDTO);
-
-        clienteRespository.save(clienteModel);*/
         return update(null,clienteDTO);
     }
 
