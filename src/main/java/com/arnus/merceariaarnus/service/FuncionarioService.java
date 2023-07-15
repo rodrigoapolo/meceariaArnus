@@ -1,8 +1,9 @@
 package com.arnus.merceariaarnus.service;
 
-import com.arnus.merceariaarnus.dto.CategoriaProdutoDTO;
+import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
+import com.arnus.merceariaarnus.dto.ClienteDTO;
 import com.arnus.merceariaarnus.dto.FuncionarioDTO;
-import com.arnus.merceariaarnus.model.CategoriaProdutoModel;
+import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.FuncionarioModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.FuncionarioRespository;
@@ -17,15 +18,32 @@ public class FuncionarioService {
     FuncionarioRespository funcionarioRespository;
 
     public FuncionarioDTO salvar(FuncionarioDTO funcionarioDTO){
-        PessoaModel pessoa = new PessoaModel();
-        BeanUtils.copyProperties(funcionarioDTO, pessoa);
-
         FuncionarioModel funcionarioModel = new FuncionarioModel();
-        funcionarioModel.setPessoaModel(pessoa);
-        funcionarioModel.setClt(funcionarioDTO.getClt());
+        criarFuncionario(funcionarioModel, funcionarioDTO);
 
         funcionarioRespository.save(funcionarioModel);
-
         return funcionarioDTO;
+    }
+
+    public FuncionarioDTO update(Integer id, FuncionarioDTO funcionarioDTO){
+        if(!funcionarioRespository.findById(id).isPresent())
+            throw new IllegalArgumentException("ID do funcionario não existe");
+
+        FuncionarioModel funcionarioModel = funcionarioRespository.getReferenceById(id);
+        criarFuncionario(funcionarioModel, funcionarioDTO);
+
+        funcionarioRespository.save(funcionarioModel);
+        return funcionarioDTO;
+    }
+
+    private void criarFuncionario(FuncionarioModel funcionarioModel, FuncionarioDTO funcionarioDTO){
+        funcionarioModel.setPessoaModel(criarPessoa(funcionarioDTO));
+        funcionarioModel.setClt(FormatacaoCpfCnpj.formatarCpfCnpj(funcionarioDTO.getClt(), "CLT invalido"));
+    }
+
+    private PessoaModel criarPessoa(FuncionarioDTO funcionarioDTO){
+        PessoaModel pessoaModel = new PessoaModel();
+        BeanUtils.copyProperties(funcionarioDTO, pessoaModel);
+        return pessoaModel;
     }
 }

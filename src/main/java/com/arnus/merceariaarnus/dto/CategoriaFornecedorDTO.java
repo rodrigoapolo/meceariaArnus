@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class CategoriaFornecedorDTO {
-    String nome;
+    private String nome;
 }

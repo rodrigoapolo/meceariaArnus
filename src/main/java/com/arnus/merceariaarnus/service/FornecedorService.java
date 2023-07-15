@@ -1,9 +1,7 @@
 package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
-import com.arnus.merceariaarnus.dto.ClienteDTO;
 import com.arnus.merceariaarnus.dto.FornecedorDTO;
-import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.FornecedorModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.CategoriaFornecedorRespository;
@@ -21,20 +19,43 @@ public class FornecedorService {
     CategoriaFornecedorRespository categoriaFornecedorRespository;
 
     public FornecedorDTO salvar(FornecedorDTO fornecedorDTO){
-        if(!categoriaFornecedorRespository.findById(fornecedorDTO.getCategoriaFornecedor()).isPresent())
-            throw new IllegalArgumentException("ID da categoria fornecedor não existe");
-
-        PessoaModel pessoaModel = new PessoaModel();
-        BeanUtils.copyProperties(fornecedorDTO, pessoaModel);
-        fornecedorDTO.setCnpj(FormatacaoCpfCnpj.formatarCpfCnpj(fornecedorDTO.getCnpj(), "CNPJ invalido"));
+        verificarFornecedor(fornecedorDTO);
 
         FornecedorModel fornecedorModel = new FornecedorModel();
-        fornecedorModel.setPessoaModel(pessoaModel);
-        fornecedorModel.setCnpj(fornecedorDTO.getCnpj());
-        fornecedorModel.setCategoriaFornecedor(categoriaFornecedorRespository
-                .findById(fornecedorDTO.getCategoriaFornecedor()).get());
+        criarFornecedor(fornecedorModel, fornecedorDTO);
 
         fornecedorRespository.save(fornecedorModel);
         return fornecedorDTO;
+    }
+
+    public FornecedorDTO update(Integer id, FornecedorDTO fornecedorDTO){
+        if(!fornecedorRespository.findById(id).isPresent())
+            throw new IllegalArgumentException("ID do cliente não existe");
+
+        verificarFornecedor(fornecedorDTO);
+
+        FornecedorModel fornecedorModel = fornecedorRespository.getReferenceById(id);
+        criarFornecedor(fornecedorModel, fornecedorDTO);
+
+        fornecedorRespository.save(fornecedorModel);
+        return fornecedorDTO;
+    }
+
+    private void verificarFornecedor(FornecedorDTO fornecedorDTO) {
+        if(!categoriaFornecedorRespository.findById(fornecedorDTO.getCategoriaFornecedor()).isPresent())
+            throw new IllegalArgumentException("ID da categoria fornecedor não existe");
+    }
+
+    private void criarFornecedor(FornecedorModel fornecedorModel, FornecedorDTO fornecedorDTO){
+        fornecedorModel.setPessoaModel(criarPessoa(fornecedorDTO));
+        fornecedorModel.setCnpj(FormatacaoCpfCnpj.formatarCpfCnpj(fornecedorDTO.getCnpj(), "CNPJ invalido"));
+        fornecedorModel.setCategoriaFornecedor(categoriaFornecedorRespository
+                .findById(fornecedorDTO.getCategoriaFornecedor()).get());
+    }
+
+    private PessoaModel criarPessoa(FornecedorDTO fornecedorDTO){
+        PessoaModel pessoaModel = new PessoaModel();
+        BeanUtils.copyProperties(fornecedorDTO, pessoaModel);
+        return pessoaModel;
     }
 }

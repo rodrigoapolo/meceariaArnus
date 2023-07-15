@@ -1,7 +1,9 @@
 package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
+import com.arnus.merceariaarnus.dto.CategoriaProdutoDTO;
 import com.arnus.merceariaarnus.dto.ClienteDTO;
+import com.arnus.merceariaarnus.model.CategoriaProdutoModel;
 import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.ClienteRespository;
@@ -15,16 +17,32 @@ public class ClienteService {
     ClienteRespository clienteRespository;
 
     public ClienteDTO salvar(ClienteDTO clienteDTO){
-        PessoaModel pessoaModel = new PessoaModel();
-        BeanUtils.copyProperties(clienteDTO, pessoaModel);
-        clienteDTO.setCpf(FormatacaoCpfCnpj.formatarCpfCnpj(clienteDTO.getCpf(), "CPF invalido"));
-
         ClienteModel clienteModel = new ClienteModel();
-        clienteModel.setPessoaModel(pessoaModel);
-        clienteModel.setCpf(clienteDTO.getCpf());
+        criarCliente(clienteModel, clienteDTO);
 
         clienteRespository.save(clienteModel);
         return clienteDTO;
     }
 
+    public ClienteDTO update(Integer id, ClienteDTO clienteDTO){
+        if(!clienteRespository.findById(id).isPresent())
+            throw new IllegalArgumentException("ID do cliente não existe");
+
+        ClienteModel clienteModel = clienteRespository.getReferenceById(id);
+        criarCliente(clienteModel, clienteDTO);
+
+        clienteRespository.save(clienteModel);
+        return clienteDTO;
+    }
+
+    private void criarCliente(ClienteModel clienteModel, ClienteDTO clienteDTO){
+        clienteModel.setPessoaModel(criarPessoa(clienteDTO));
+        clienteModel.setCpf(FormatacaoCpfCnpj.formatarCpfCnpj(clienteDTO.getCpf(), "CPF invalido"));
+    }
+
+    private PessoaModel criarPessoa(ClienteDTO clienteDTO){
+        PessoaModel pessoaModel = new PessoaModel();
+        BeanUtils.copyProperties(clienteDTO, pessoaModel);
+        return pessoaModel;
+    }
 }
