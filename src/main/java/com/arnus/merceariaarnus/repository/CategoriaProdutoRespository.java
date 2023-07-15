@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoriaRespository extends JpaRepository<CategoriaProdutoModel, Integer> {
+public interface CategoriaProdutoRespository extends JpaRepository<CategoriaProdutoModel, Integer> {
 }

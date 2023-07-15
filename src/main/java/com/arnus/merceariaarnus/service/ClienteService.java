@@ -14,17 +14,14 @@ public class ClienteService {
     @Autowired
     ClienteRespository clienteRespository;
 
-    public ClienteDTO salvarCliente(ClienteDTO clienteDTO){
+    public ClienteDTO salvar(ClienteDTO clienteDTO){
         PessoaModel pessoaModel = new PessoaModel();
         BeanUtils.copyProperties(clienteDTO, pessoaModel);
-        pessoaModel.setEndereco(clienteDTO.getGetEndereco());
         clienteDTO.setCpf(FormatacaoCpfCnpj.formatarCpfCnpj(clienteDTO.getCpf(), "CPF invalido"));
 
         ClienteModel clienteModel = new ClienteModel();
         clienteModel.setPessoaModel(pessoaModel);
         clienteModel.setCpf(clienteDTO.getCpf());
-
-
 
         clienteRespository.save(clienteModel);
         return clienteDTO;
