@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "tb_Cliente")
 public class ClienteModel {
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Embedded

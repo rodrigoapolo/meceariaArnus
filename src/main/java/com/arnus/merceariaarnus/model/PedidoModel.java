@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name = "tb_pedido")
 public class PedidoModel {
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Double total;

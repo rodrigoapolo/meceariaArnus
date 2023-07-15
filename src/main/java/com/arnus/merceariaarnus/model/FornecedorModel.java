@@ -1,6 +1,8 @@
 package com.arnus.merceariaarnus.model;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "tb_fornecedor")
 public class FornecedorModel {
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Embedded

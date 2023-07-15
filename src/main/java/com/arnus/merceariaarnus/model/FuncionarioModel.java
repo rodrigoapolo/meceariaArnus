@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name = "tb_funcionario")
 public class FuncionarioModel extends PessoaModel {
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Embedded
