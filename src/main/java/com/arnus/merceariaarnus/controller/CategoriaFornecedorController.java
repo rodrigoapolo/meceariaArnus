@@ -4,10 +4,7 @@ import com.arnus.merceariaarnus.dto.CategoriaFornecedorDTO;
 import com.arnus.merceariaarnus.service.CategoriaFornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/categoria-fornecedor")
@@ -23,7 +20,7 @@ public class CategoriaFornecedorController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<CategoriaFornecedorDTO> update(Integer id, @RequestBody CategoriaFornecedorDTO categoria){
+    public ResponseEntity<CategoriaFornecedorDTO> update(@PathVariable Integer id, @RequestBody CategoriaFornecedorDTO categoria){
         CategoriaFornecedorDTO categoriaDTO = categoriaFornecedorService.update(id, categoria);
         return ResponseEntity.ok().body(categoriaDTO);
     }

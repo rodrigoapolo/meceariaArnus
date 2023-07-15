@@ -18,18 +18,20 @@ public class FuncionarioService {
     FuncionarioRespository funcionarioRespository;
 
     public FuncionarioDTO salvar(FuncionarioDTO funcionarioDTO){
-        FuncionarioModel funcionarioModel = new FuncionarioModel();
-        criarFuncionario(funcionarioModel, funcionarioDTO);
-
-        funcionarioRespository.save(funcionarioModel);
-        return funcionarioDTO;
+        return update(null, funcionarioDTO);
     }
 
     public FuncionarioDTO update(Integer id, FuncionarioDTO funcionarioDTO){
-        if(!funcionarioRespository.findById(id).isPresent())
-            throw new IllegalArgumentException("ID do funcionario não existe");
+        FuncionarioModel funcionarioModel = new FuncionarioModel();
+        if(id != null) {
+            if (id == 0)
+                throw new IllegalArgumentException("ID do funcionario não pode ser 0");
+            if (!funcionarioRespository.findById(id).isPresent())
+                throw new IllegalArgumentException("ID do funcionario não existe");
 
-        FuncionarioModel funcionarioModel = funcionarioRespository.getReferenceById(id);
+            funcionarioModel = funcionarioRespository.getReferenceById(id);
+        }
+
         criarFuncionario(funcionarioModel, funcionarioDTO);
 
         funcionarioRespository.save(funcionarioModel);

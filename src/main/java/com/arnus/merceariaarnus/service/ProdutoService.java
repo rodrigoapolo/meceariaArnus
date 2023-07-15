@@ -23,6 +23,7 @@ public class ProdutoService {
 
 
     public ProdutoDTO salvar(ProdutoDTO produtoDTO){
+/*
         ProdutoModel produtoModel = new ProdutoModel();
         BeanUtils.copyProperties(produtoDTO, produtoModel);
 
@@ -32,18 +33,28 @@ public class ProdutoService {
         produtoModel.setFornecedorModel(fornecedorRespository.findById(produtoDTO.getFornecedor()).get());
 
         produtoRespository.save(produtoModel);
+*/
 
-        return produtoDTO;
+        return update(null, produtoDTO);
     }
 
     public ProdutoDTO update(Integer id, ProdutoDTO produtoDTO){
-        if(!produtoRespository.findById(id).isPresent())
-            throw new IllegalArgumentException("ID do Produto não existe");
+        ProdutoModel categoriaModel = new ProdutoModel();
+        if(id != null) {
+            if (id == 0)
+                throw new IllegalArgumentException("ID do funcionario não pode ser 0");
 
-       verificarProduto(produtoDTO);
+            if(!produtoRespository.findById(id).isPresent())
+                throw new IllegalArgumentException("ID do Produto não existe");
 
-        ProdutoModel categoriaModel = produtoRespository.getReferenceById(id);
+            categoriaModel = produtoRespository.getReferenceById(id);
+        }
+
+        verificarProduto(produtoDTO);
+
         BeanUtils.copyProperties(produtoDTO, categoriaModel);
+        categoriaModel.setCategoriaProdutoModel(categoriaProdutoRespository.findById(produtoDTO.getCategoriaProduto()).get());
+        categoriaModel.setFornecedorModel(fornecedorRespository.findById(produtoDTO.getFornecedor()).get());
 
         produtoRespository.save(categoriaModel);
 

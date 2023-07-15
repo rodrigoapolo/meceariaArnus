@@ -13,18 +13,20 @@ public class CategoriaProdutoService {
     CategoriaProdutoRespository categoriaProdutoRespository;
 
     public CategoriaProdutoDTO save(CategoriaProdutoDTO categoriaDto){
-        CategoriaProdutoModel categoriaModel = new CategoriaProdutoModel();
-        BeanUtils.copyProperties(categoriaDto, categoriaModel);
-        categoriaProdutoRespository.save(categoriaModel);
-
-        return categoriaDto;
+        return update(null, categoriaDto);
     }
 
     public CategoriaProdutoDTO update( Integer id, CategoriaProdutoDTO categoriaDTO){
-        if(!categoriaProdutoRespository.findById(id).isPresent())
-            throw new IllegalArgumentException("ID da categoria Produto não existe");
+        CategoriaProdutoModel categoriaModel = new CategoriaProdutoModel();
+        if(id != null){
+            if(id == 0)
+                throw new IllegalArgumentException("ID da categoria Produto não pode ser 0");
+            if(!categoriaProdutoRespository.findById(id).isPresent())
+                throw new IllegalArgumentException("ID da categoria Produto não existe");
 
-        CategoriaProdutoModel categoriaModel = categoriaProdutoRespository.getReferenceById(id);
+            categoriaModel = categoriaProdutoRespository.getReferenceById(id);
+        }
+
         BeanUtils.copyProperties(categoriaDTO, categoriaModel);
 
         categoriaProdutoRespository.save(categoriaModel);

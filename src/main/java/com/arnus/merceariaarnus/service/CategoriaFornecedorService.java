@@ -13,18 +13,20 @@ public class CategoriaFornecedorService {
     CategoriaFornecedorRespository categoriaFornecedorRespository;
 
     public CategoriaFornecedorDTO save(CategoriaFornecedorDTO categoriaDto){
-        CategoriaFornecedorModel categoriaModel = new CategoriaFornecedorModel();
-        BeanUtils.copyProperties(categoriaDto, categoriaModel);
-
-        categoriaFornecedorRespository.save(categoriaModel);
-        return categoriaDto;
+        return update(null,categoriaDto);
     }
 
     public CategoriaFornecedorDTO update(Integer id, CategoriaFornecedorDTO categoriaDTO){
-        if(!categoriaFornecedorRespository.findById(id).isPresent())
-            throw new IllegalArgumentException("ID da categoria fornecedor não existe");
+        CategoriaFornecedorModel categoriaModel = new CategoriaFornecedorModel();
+        if(id != null){
+            if(id == 0)
+                throw new IllegalArgumentException("ID da categoria fornecedor não pode ser 0");
+            if(!categoriaFornecedorRespository.findById(id).isPresent())
+                throw new IllegalArgumentException("ID da categoria fornecedor não existe");
 
-        CategoriaFornecedorModel categoriaModel = categoriaFornecedorRespository.getReferenceById(id);
+            categoriaModel = categoriaFornecedorRespository.getReferenceById(id);
+        }
+
         BeanUtils.copyProperties(categoriaDTO, categoriaModel);
 
         categoriaFornecedorRespository.save(categoriaModel);

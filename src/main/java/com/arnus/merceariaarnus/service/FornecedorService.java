@@ -19,22 +19,28 @@ public class FornecedorService {
     CategoriaFornecedorRespository categoriaFornecedorRespository;
 
     public FornecedorDTO salvar(FornecedorDTO fornecedorDTO){
-        verificarFornecedor(fornecedorDTO);
+/*        verificarFornecedor(fornecedorDTO);
 
         FornecedorModel fornecedorModel = new FornecedorModel();
         criarFornecedor(fornecedorModel, fornecedorDTO);
 
-        fornecedorRespository.save(fornecedorModel);
-        return fornecedorDTO;
+        fornecedorRespository.save(fornecedorModel);*/
+        return update(null, fornecedorDTO);
     }
 
     public FornecedorDTO update(Integer id, FornecedorDTO fornecedorDTO){
-        if(!fornecedorRespository.findById(id).isPresent())
-            throw new IllegalArgumentException("ID do cliente não existe");
+        FornecedorModel fornecedorModel = new FornecedorModel();
+        if(id != null) {
+            if (id == 0)
+                throw new IllegalArgumentException("ID do fornecedor não pode ser 0");
+            if (!fornecedorRespository.findById(id).isPresent())
+                throw new IllegalArgumentException("ID do fornecedor não existe");
+
+            fornecedorModel = fornecedorRespository.getReferenceById(id);
+        }
 
         verificarFornecedor(fornecedorDTO);
 
-        FornecedorModel fornecedorModel = fornecedorRespository.getReferenceById(id);
         criarFornecedor(fornecedorModel, fornecedorDTO);
 
         fornecedorRespository.save(fornecedorModel);

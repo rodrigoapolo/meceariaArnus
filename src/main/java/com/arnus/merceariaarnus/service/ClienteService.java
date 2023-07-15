@@ -17,18 +17,24 @@ public class ClienteService {
     ClienteRespository clienteRespository;
 
     public ClienteDTO salvar(ClienteDTO clienteDTO){
-        ClienteModel clienteModel = new ClienteModel();
+/*        ClienteModel clienteModel = new ClienteModel();
         criarCliente(clienteModel, clienteDTO);
 
-        clienteRespository.save(clienteModel);
-        return clienteDTO;
+        clienteRespository.save(clienteModel);*/
+        return update(null,clienteDTO);
     }
 
     public ClienteDTO update(Integer id, ClienteDTO clienteDTO){
-        if(!clienteRespository.findById(id).isPresent())
-            throw new IllegalArgumentException("ID do cliente não existe");
+        ClienteModel clienteModel = new ClienteModel();
+        if(id != null){
+            if(id == 0)
+                throw new IllegalArgumentException("ID do cliente não pode ser 0");
+            if(!clienteRespository.findById(id).isPresent())
+                throw new IllegalArgumentException("ID do cliente não existe");
 
-        ClienteModel clienteModel = clienteRespository.getReferenceById(id);
+            clienteModel = clienteRespository.getReferenceById(id);
+        }
+
         criarCliente(clienteModel, clienteDTO);
 
         clienteRespository.save(clienteModel);
