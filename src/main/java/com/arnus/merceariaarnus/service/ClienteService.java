@@ -1,5 +1,6 @@
 package com.arnus.merceariaarnus.service;
 
+import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
 import com.arnus.merceariaarnus.dto.ClienteDTO;
 import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
@@ -16,10 +17,17 @@ public class ClienteService {
     public ClienteDTO save(ClienteDTO clienteDTO){
         PessoaModel pessoaModel = new PessoaModel();
         BeanUtils.copyProperties(clienteDTO, pessoaModel);
+        pessoaModel.setEndereco(clienteDTO.getGetEndereco());
+        clienteDTO.setCpf(FormatacaoCpfCnpj.formatarCpfCnpj(clienteDTO.getCpf(), "CPF invalido"));
+
         ClienteModel clienteModel = new ClienteModel();
         clienteModel.setPessoaModel(pessoaModel);
         clienteModel.setCpf(clienteDTO.getCpf());
+
+
+
         clienteRespository.save(clienteModel);
         return clienteDTO;
     }
+
 }
