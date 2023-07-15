@@ -14,7 +14,7 @@ public class ClienteService {
     @Autowired
     ClienteRespository clienteRespository;
 
-    public ClienteDTO save(ClienteDTO clienteDTO){
+    public ClienteDTO salvarCliente(ClienteDTO clienteDTO){
         PessoaModel pessoaModel = new PessoaModel();
         BeanUtils.copyProperties(clienteDTO, pessoaModel);
         pessoaModel.setEndereco(clienteDTO.getGetEndereco());

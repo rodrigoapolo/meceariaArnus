@@ -16,8 +16,8 @@ public class ClienteController {
     ClienteService clienteService;
 
     @PostMapping()
-    public ResponseEntity<ClienteDTO> ClienteView(@RequestBody ClienteDTO cliente){
-        ClienteDTO clienteDTO = clienteService.save(cliente);
+    public ResponseEntity<ClienteDTO> salvarCliente(@RequestBody ClienteDTO cliente){
+        ClienteDTO clienteDTO = clienteService.salvarCliente(cliente);
         return ResponseEntity.ok().body(clienteDTO);
     }
 }
