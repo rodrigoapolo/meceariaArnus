@@ -15,8 +15,8 @@ public class ProdutoModel {
     private Double preco;
     private Integer qtd;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
-    private CategoriaModel categoriaModel;
+    @JoinColumn(name = "categoria_produto_id", referencedColumnName = "id")
+    private CategoriaProdutoModel categoriaProdutoModel;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "fornecedor_id", referencedColumnName = "id")
     private FornecedorModel fornecedorModel;

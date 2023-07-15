@@ -14,4 +14,7 @@ public class FornecedorModel {
     @Embedded
     private PessoaModel pessoaModel;
     private String cnpj;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_fornecedor_id", referencedColumnName = "id")
+    CategoriaFornecedorModel categoriaFornecedor;
 }
