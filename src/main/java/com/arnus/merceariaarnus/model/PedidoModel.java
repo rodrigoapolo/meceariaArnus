@@ -20,7 +20,7 @@ public class PedidoModel {
     private Double total;
     private LocalDate data;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pessoa_id",referencedColumnName = "id")
+    @JoinColumn(name = "cliente_id",referencedColumnName = "id")
     private ClienteModel clienteModel;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "funcionario_id",referencedColumnName = "id")

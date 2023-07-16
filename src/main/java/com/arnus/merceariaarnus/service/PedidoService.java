@@ -1,17 +1,17 @@
 package com.arnus.merceariaarnus.service;
 
-import com.arnus.merceariaarnus.dto.InterPedidoDTO;
 import com.arnus.merceariaarnus.dto.PedidoDTO;
-import com.arnus.merceariaarnus.dto.view.TotalVenda;
+import com.arnus.merceariaarnus.dto.view.PedidoPorData;
+import com.arnus.merceariaarnus.dto.view.TotalPedido;
 import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.FuncionarioModel;
-import com.arnus.merceariaarnus.model.InterPedidoModel;
 import com.arnus.merceariaarnus.model.PedidoModel;
 import com.arnus.merceariaarnus.repository.PedidoRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class PedidoService {
@@ -35,7 +35,7 @@ public class PedidoService {
 
         pedidoModel.setClienteModel(cliente);
         pedidoModel.setFuncionarioModel(funcionario);
-        pedidoModel.setData(LocalDate.now());
+        pedidoModel.setData(pedidoDTO.getData());
 
         pedidoModel = pedidoRespository.save(pedidoModel);
 
@@ -46,7 +46,11 @@ public class PedidoService {
         return pedidoDTO;
     }
 
-    public TotalVenda totalVendas(){
-        return pedidoRespository.getTotalVenda();
+    public TotalPedido consultarTotalPedido(){
+        return pedidoRespository.consultarTotalPedido();
+    }
+
+    public List<PedidoPorData> consultarPedidosPorPeriodo(LocalDate inicio, LocalDate fim){
+        return pedidoRespository.consultarPedidosPorPeriodo(inicio, fim);
     }
 }

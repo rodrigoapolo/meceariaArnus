@@ -1,5 +1,5 @@
 package com.arnus.merceariaarnus.dto.view;
 
-public interface TotalVenda {
+public interface TotalPedido {
     Double getTotalVendas();
 }
