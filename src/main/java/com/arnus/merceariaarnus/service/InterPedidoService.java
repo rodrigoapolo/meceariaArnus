@@ -31,8 +31,8 @@ public class InterPedidoService {
 
             interModel.setProdutoModel(produtoModel);
             interModel.setValorUnidade(produtoModel.getPreco());
-            //TODO diminuir do estoque
-            interModel.setQtd(interPedidoDTO.getQtd());
+            Integer qtd = produtoService.diminuirValorEstoque(interPedidoDTO.getQtd(), produtoModel);
+            interModel.setQtd(qtd);
             Double subTotal =  interPedidoDTO.getQtd() * produtoModel.getPreco();
             interModel.setSubTotal(subTotal);
             valorTotal += interModel.getSubTotal();

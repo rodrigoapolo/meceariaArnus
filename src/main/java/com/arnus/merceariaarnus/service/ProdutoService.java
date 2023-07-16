@@ -56,4 +56,19 @@ public class ProdutoService {
         produtoRespository.save(produto);
     }
 
+    public Integer diminuirValorEstoque(Integer qtd, ProdutoModel produtoModel){
+        if(produtoModel.getQtd() >= qtd){
+            produtoModel.setQtd(produtoModel.getQtd() - qtd);
+            produtoRespository.save(produtoModel);
+        }else {
+            throw new IllegalArgumentException("Estoque indisponivel para essa qualidade: "+qtd);
+        }
+
+        if(produtoModel.getQtd() < 300){
+            //TODO disparar um email
+        }
+
+        return qtd;
+    }
+
 }
