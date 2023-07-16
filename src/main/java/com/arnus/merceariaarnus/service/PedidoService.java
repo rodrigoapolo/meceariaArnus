@@ -32,20 +32,16 @@ public class PedidoService {
         ClienteModel cliente = clienteService.findById(pedidoDTO.getCliente());
         FuncionarioModel funcionario = funcionarioService.findById(pedidoDTO.getFuncionario());
 
-        Double valorTotal = 0.0;
-        for (InterPedidoDTO inter : pedidoDTO.getInterPedidoDTO()) {
-            InterPedidoModel interPedidoModel = interPedidoService.geralInter(inter);
-            pedidoModel.getIntensPedidos().add(interPedidoModel);
-            valorTotal += interPedidoModel.getSubTotal();
-        }
-
-        pedidoModel.setTotal(valorTotal);
-        pedidoModel.setData(LocalDate.now());
-
         pedidoModel.setClienteModel(cliente);
         pedidoModel.setFuncionarioModel(funcionario);
+        pedidoModel.setData(LocalDate.now());
+
+        pedidoModel = pedidoRespository.save(pedidoModel);
+
+        interPedidoService.geralInter(pedidoModel, pedidoDTO.getInterPedidoDTO());
 
         pedidoRespository.save(pedidoModel);
+
         return pedidoDTO;
     }
 }

@@ -20,4 +20,7 @@ public class InterPedidoModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", referencedColumnName = "id")
     private ProdutoModel produtoModel;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id", referencedColumnName = "id")
+    private PedidoModel pedidoModel;
 }

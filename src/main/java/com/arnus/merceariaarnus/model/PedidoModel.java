@@ -25,8 +25,4 @@ public class PedidoModel {
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "funcionario_id",referencedColumnName = "id")
     private FuncionarioModel funcionarioModel;
-    @Setter(AccessLevel.NONE)
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pedido_id", referencedColumnName = "id")
-    private List<InterPedidoModel> intensPedidos = new LinkedList<>();
 }
