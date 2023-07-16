@@ -1,12 +1,15 @@
 package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
+import com.arnus.merceariaarnus.dto.view.ProdutosMiasVendidos;
+import com.arnus.merceariaarnus.dto.view.TotalPedido;
 import com.arnus.merceariaarnus.model.ProdutoModel;
 import com.arnus.merceariaarnus.repository.ProdutoRespository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,4 +74,7 @@ public class ProdutoService {
         return qtd;
     }
 
+    public List<ProdutosMiasVendidos> consultarProdutosMaisVendios(){
+        return produtoRespository.consultarProdutosMaisVendios();
+    }
 }

@@ -1,10 +1,14 @@
 package com.arnus.merceariaarnus.controller;
 
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
+import com.arnus.merceariaarnus.dto.view.ProdutosMiasVendidos;
+import com.arnus.merceariaarnus.dto.view.TotalPedido;
 import com.arnus.merceariaarnus.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/produto")
@@ -31,4 +35,9 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/produtos-mais-vendios")
+    public ResponseEntity<List<ProdutosMiasVendidos>> consultarProdutosMaisVendios(){
+        List<ProdutosMiasVendidos> produtosMiasVendidos = produtoService.consultarProdutosMaisVendios();
+        return ResponseEntity.ok().body(produtosMiasVendidos);
+    }
 }

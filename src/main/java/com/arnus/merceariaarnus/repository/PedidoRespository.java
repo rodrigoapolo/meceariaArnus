@@ -23,7 +23,4 @@ public interface PedidoRespository extends JpaRepository<PedidoModel, Integer> {
             "INNER JOIN tb_funcionario  f ON p.funcionario_id = f.id\n" +
             "WHERE p.data BETWEEN :inicio AND :fim", nativeQuery = true)
     List<PedidoPorData> consultarPedidosPorPeriodo(@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
-
-
-
 }
