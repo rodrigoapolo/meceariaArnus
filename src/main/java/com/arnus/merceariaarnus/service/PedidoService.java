@@ -2,6 +2,7 @@ package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.dto.InterPedidoDTO;
 import com.arnus.merceariaarnus.dto.PedidoDTO;
+import com.arnus.merceariaarnus.dto.view.TotalVenda;
 import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.FuncionarioModel;
 import com.arnus.merceariaarnus.model.InterPedidoModel;
@@ -43,5 +44,9 @@ public class PedidoService {
         pedidoRespository.save(pedidoModel);
 
         return pedidoDTO;
+    }
+
+    public TotalVenda totalVendas(){
+        return pedidoRespository.getTotalVenda();
     }
 }
