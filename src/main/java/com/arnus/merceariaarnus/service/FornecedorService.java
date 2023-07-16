@@ -2,6 +2,7 @@ package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
 import com.arnus.merceariaarnus.dto.FornecedorDTO;
+import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.FornecedorModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.CategoriaFornecedorRespository;
@@ -25,24 +26,28 @@ public class FornecedorService {
     public FornecedorDTO update(Integer id, FornecedorDTO fornecedorDTO){
         FornecedorModel fornecedorModel = new FornecedorModel();
         if(id != null) {
-            if (id == 0)
-                throw new IllegalArgumentException("ID do fornecedor não pode ser 0");
-            if (!fornecedorRespository.findById(id).isPresent())
-                throw new IllegalArgumentException("ID do fornecedor não existe");
+            verificarFornecedor(id);
 
-            fornecedorModel = fornecedorRespository.getReferenceById(id);
+            fornecedorModel = fornecedorRespository.findByIdAndStatusTrue(id).get();
         }
 
-        verificarFornecedor(fornecedorDTO);
+        verificarIdCategoriaFornecedor(fornecedorDTO);
 
         criarFornecedor(fornecedorModel, fornecedorDTO);
-
+        fornecedorModel.setStatus(true);
         fornecedorRespository.save(fornecedorModel);
         return fornecedorDTO;
     }
 
-    private void verificarFornecedor(FornecedorDTO fornecedorDTO) {
-        if(!categoriaFornecedorRespository.findById(fornecedorDTO.getCategoriaFornecedor()).isPresent())
+    private void verificarFornecedor(Integer id) {
+        if (id == 0)
+            throw new IllegalArgumentException("ID do fornecedor não pode ser 0");
+        if (!fornecedorRespository.findByIdAndStatusTrue(id).isPresent())
+            throw new IllegalArgumentException("ID do fornecedor não existe");
+    }
+
+    private void verificarIdCategoriaFornecedor(FornecedorDTO fornecedorDTO) {
+        if(!categoriaFornecedorRespository.findByIdAndStatusTrue(fornecedorDTO.getCategoriaFornecedor()).isPresent())
             throw new IllegalArgumentException("ID da categoria fornecedor não existe");
     }
 
@@ -50,12 +55,19 @@ public class FornecedorService {
         fornecedorModel.setPessoaModel(criarPessoa(fornecedorDTO));
         fornecedorModel.setCnpj(FormatacaoCpfCnpj.formatarCpfCnpj(fornecedorDTO.getCnpj(), "CNPJ invalido"));
         fornecedorModel.setCategoriaFornecedor(categoriaFornecedorRespository
-                .findById(fornecedorDTO.getCategoriaFornecedor()).get());
+                .findByIdAndStatusTrue(fornecedorDTO.getCategoriaFornecedor()).get());
     }
 
     private PessoaModel criarPessoa(FornecedorDTO fornecedorDTO){
         PessoaModel pessoaModel = new PessoaModel();
         BeanUtils.copyProperties(fornecedorDTO, pessoaModel);
         return pessoaModel;
+    }
+
+    public void delete(Integer id){
+        verificarFornecedor(id);
+        FornecedorModel fornecedor = fornecedorRespository.findByIdAndStatusTrue(id).get();
+        fornecedor.setStatus(false);
+        fornecedorRespository.save(fornecedor);
     }
 }

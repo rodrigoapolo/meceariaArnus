@@ -1,9 +1,8 @@
 package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
-import com.arnus.merceariaarnus.dto.ClienteDTO;
 import com.arnus.merceariaarnus.dto.FuncionarioDTO;
-import com.arnus.merceariaarnus.model.ClienteModel;
+import com.arnus.merceariaarnus.model.FornecedorModel;
 import com.arnus.merceariaarnus.model.FuncionarioModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.FuncionarioRespository;
@@ -24,18 +23,22 @@ public class FuncionarioService {
     public FuncionarioDTO update(Integer id, FuncionarioDTO funcionarioDTO){
         FuncionarioModel funcionarioModel = new FuncionarioModel();
         if(id != null) {
-            if (id == 0)
-                throw new IllegalArgumentException("ID do funcionario não pode ser 0");
-            if (!funcionarioRespository.findById(id).isPresent())
-                throw new IllegalArgumentException("ID do funcionario não existe");
+            verificarFuncionario(id);
 
-            funcionarioModel = funcionarioRespository.getReferenceById(id);
+            funcionarioModel = funcionarioRespository.findByIdAndStatusTrue(id).get();
         }
 
         criarFuncionario(funcionarioModel, funcionarioDTO);
-
+        funcionarioModel.setStatus(true);
         funcionarioRespository.save(funcionarioModel);
         return funcionarioDTO;
+    }
+
+    private void verificarFuncionario(Integer id) {
+        if (id == 0)
+            throw new IllegalArgumentException("ID do funcionario não pode ser 0");
+        if (!funcionarioRespository.findByIdAndStatusTrue(id).isPresent())
+            throw new IllegalArgumentException("ID do funcionario não existe");
     }
 
     private void criarFuncionario(FuncionarioModel funcionarioModel, FuncionarioDTO funcionarioDTO){
@@ -47,5 +50,12 @@ public class FuncionarioService {
         PessoaModel pessoaModel = new PessoaModel();
         BeanUtils.copyProperties(funcionarioDTO, pessoaModel);
         return pessoaModel;
+    }
+
+    public void delete(Integer id){
+        verificarFuncionario(id);
+        FuncionarioModel funcionario = funcionarioRespository.findByIdAndStatusTrue(id).get();
+        funcionario.setStatus(false);
+        funcionarioRespository.save(funcionario);
     }
 }

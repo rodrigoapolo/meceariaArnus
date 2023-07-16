@@ -14,8 +14,8 @@ public class CategoriaFornecedorController {
     CategoriaFornecedorService categoriaFornecedorService;
 
     @PostMapping()
-    public ResponseEntity<CategoriaFornecedorDTO> salvarCategoria(@RequestBody CategoriaFornecedorDTO categoria){
-        CategoriaFornecedorDTO categoriaDTO = categoriaFornecedorService.save(categoria);
+    public ResponseEntity<CategoriaFornecedorDTO> salvar(@RequestBody CategoriaFornecedorDTO categoria){
+        CategoriaFornecedorDTO categoriaDTO = categoriaFornecedorService.salvar(categoria);
         return ResponseEntity.ok().body(categoriaDTO);
     }
 
@@ -23,5 +23,11 @@ public class CategoriaFornecedorController {
     public ResponseEntity<CategoriaFornecedorDTO> update(@PathVariable Integer id, @RequestBody CategoriaFornecedorDTO categoria){
         CategoriaFornecedorDTO categoriaDTO = categoriaFornecedorService.update(id, categoria);
         return ResponseEntity.ok().body(categoriaDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        categoriaFornecedorService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

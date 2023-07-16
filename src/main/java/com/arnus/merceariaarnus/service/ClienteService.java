@@ -23,18 +23,22 @@ public class ClienteService {
     public ClienteDTO update(Integer id, ClienteDTO clienteDTO){
         ClienteModel clienteModel = new ClienteModel();
         if(id != null){
-            if(id == 0)
-                throw new IllegalArgumentException("ID do cliente não pode ser 0");
-            if(!clienteRespository.findById(id).isPresent())
-                throw new IllegalArgumentException("ID do cliente não existe");
+            verificarCliente(id);
 
-            clienteModel = clienteRespository.getReferenceById(id);
+            clienteModel = clienteRespository.findByIdAndStatusTrue(id).get();
         }
 
         criarCliente(clienteModel, clienteDTO);
-
+        clienteModel.setStatus(true);
         clienteRespository.save(clienteModel);
         return clienteDTO;
+    }
+
+    private void verificarCliente(Integer id) {
+        if(id == 0)
+            throw new IllegalArgumentException("ID do cliente não pode ser 0");
+        if(!clienteRespository.findByIdAndStatusTrue(id).isPresent())
+            throw new IllegalArgumentException("ID do cliente não existe");
     }
 
     private void criarCliente(ClienteModel clienteModel, ClienteDTO clienteDTO){
@@ -46,5 +50,12 @@ public class ClienteService {
         PessoaModel pessoaModel = new PessoaModel();
         BeanUtils.copyProperties(clienteDTO, pessoaModel);
         return pessoaModel;
+    }
+
+    public void delete(Integer id){
+        verificarCliente(id);
+        ClienteModel cliente = clienteRespository.findByIdAndStatusTrue(id).get();
+        cliente.setStatus(false);
+        clienteRespository.save(cliente);
     }
 }

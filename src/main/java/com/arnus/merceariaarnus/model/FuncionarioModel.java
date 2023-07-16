@@ -24,4 +24,5 @@ public class FuncionarioModel extends PessoaModel {
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "funcionario_id",referencedColumnName = "id")
     private List<PedidoModel> pedidoModels = new LinkedList<>();
+    private boolean status;
 }

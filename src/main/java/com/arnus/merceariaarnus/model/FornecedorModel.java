@@ -20,4 +20,5 @@ public class FornecedorModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_fornecedor_id", referencedColumnName = "id")
     CategoriaFornecedorModel categoriaFornecedor;
+    private boolean status;
 }

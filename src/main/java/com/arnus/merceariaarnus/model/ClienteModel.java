@@ -23,4 +23,5 @@ public class ClienteModel {
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoa_id",referencedColumnName = "id")
     private List<PedidoModel> pedidoModels = new LinkedList<>();
+    private boolean status;
 }

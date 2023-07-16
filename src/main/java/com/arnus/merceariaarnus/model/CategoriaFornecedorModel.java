@@ -15,4 +15,5 @@ public class CategoriaFornecedorModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private boolean status;
 }

@@ -1,6 +1,5 @@
 package com.arnus.merceariaarnus.controller;
 
-import com.arnus.merceariaarnus.dto.CategoriaProdutoDTO;
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
 import com.arnus.merceariaarnus.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @PostMapping()
-    public ResponseEntity<ProdutoDTO> salvarProduto(@RequestBody ProdutoDTO produto){
+    public ResponseEntity<ProdutoDTO> salvar(@RequestBody ProdutoDTO produto){
         ProdutoDTO produtoDTO = produtoService.salvar(produto);
         return ResponseEntity.ok().body(produtoDTO);
     }
@@ -24,6 +23,12 @@ public class ProdutoController {
     public ResponseEntity<ProdutoDTO> update(@PathVariable Integer id, @RequestBody ProdutoDTO produto){
         ProdutoDTO produtoDTO = produtoService.update(id, produto);
         return ResponseEntity.ok().body(produtoDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        produtoService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

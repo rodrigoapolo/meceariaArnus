@@ -1,8 +1,7 @@
 package com.arnus.merceariaarnus.service;
 
-import com.arnus.merceariaarnus.dto.CategoriaProdutoDTO;
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
-import com.arnus.merceariaarnus.model.CategoriaProdutoModel;
+import com.arnus.merceariaarnus.model.FuncionarioModel;
 import com.arnus.merceariaarnus.model.ProdutoModel;
 import com.arnus.merceariaarnus.repository.CategoriaProdutoRespository;
 import com.arnus.merceariaarnus.repository.FornecedorRespository;
@@ -27,34 +26,46 @@ public class ProdutoService {
     }
 
     public ProdutoDTO update(Integer id, ProdutoDTO produtoDTO){
-        ProdutoModel categoriaModel = new ProdutoModel();
+        ProdutoModel produtoModel = new ProdutoModel();
         if(id != null) {
-            if (id == 0)
-                throw new IllegalArgumentException("ID do funcionario não pode ser 0");
+            verificarProduto(id);
 
-            if(!produtoRespository.findById(id).isPresent())
-                throw new IllegalArgumentException("ID do Produto não existe");
-
-            categoriaModel = produtoRespository.getReferenceById(id);
+            produtoModel = produtoRespository.findByIdAndStatusTrue(id).get();
         }
 
-        verificarProduto(produtoDTO);
+        verificarIdCategoriaIdFornecedor(produtoDTO);
 
-        BeanUtils.copyProperties(produtoDTO, categoriaModel);
-        categoriaModel.setCategoriaProdutoModel(categoriaProdutoRespository.findById(produtoDTO.getCategoriaProduto()).get());
-        categoriaModel.setFornecedorModel(fornecedorRespository.findById(produtoDTO.getFornecedor()).get());
+        BeanUtils.copyProperties(produtoDTO, produtoModel);
+        produtoModel.setCategoriaProdutoModel(categoriaProdutoRespository.findByIdAndStatusTrue(produtoDTO.getCategoriaProduto()).get());
+        produtoModel.setFornecedorModel(fornecedorRespository.findByIdAndStatusTrue(produtoDTO.getFornecedor()).get());
 
-        produtoRespository.save(categoriaModel);
+        produtoModel.setStatus(true);
+        produtoRespository.save(produtoModel);
 
         return produtoDTO;
     }
 
-    private void verificarProduto(ProdutoDTO produtoDTO) {
-        if(!categoriaProdutoRespository.findById(produtoDTO.getCategoriaProduto()).isPresent())
+    private void verificarProduto(Integer id) {
+        if (id == 0)
+            throw new IllegalArgumentException("ID do funcionario não pode ser 0");
+
+        if(!produtoRespository.findByIdAndStatusTrue(id).isPresent())
+            throw new IllegalArgumentException("ID do Produto não existe");
+    }
+
+    private void verificarIdCategoriaIdFornecedor(ProdutoDTO produtoDTO) {
+        if(!categoriaProdutoRespository.findByIdAndStatusTrue(produtoDTO.getCategoriaProduto()).isPresent())
             throw new IllegalArgumentException("ID da categoria Produto não existe");
 
-        if(!fornecedorRespository.findById(produtoDTO.getFornecedor()).isPresent())
+        if(!fornecedorRespository.findByIdAndStatusTrue(produtoDTO.getFornecedor()).isPresent())
             throw new IllegalArgumentException("ID do fornecedor não existe");
+    }
+
+    public void delete(Integer id){
+        verificarProduto(id);
+        ProdutoModel produto = produtoRespository.findByIdAndStatusTrue(id).get();
+        produto.setStatus(false);
+        produtoRespository.save(produto);
     }
 
 }
