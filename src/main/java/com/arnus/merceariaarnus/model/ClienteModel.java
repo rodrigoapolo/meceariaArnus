@@ -19,9 +19,5 @@ public class ClienteModel {
     @Embedded
     private PessoaModel pessoaModel;
     private String cpf;
-    @Setter(AccessLevel.NONE)
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pessoa_id",referencedColumnName = "id")
-    private List<PedidoModel> pedidoModels = new LinkedList<>();
     private boolean status;
 }

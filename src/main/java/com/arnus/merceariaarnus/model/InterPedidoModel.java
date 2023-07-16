@@ -17,7 +17,6 @@ public class InterPedidoModel {
     private Integer qtd;
     private Double valorUnidade;
     private Double subTotal;
-    @Setter(AccessLevel.NONE)
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", referencedColumnName = "id")
     private ProdutoModel produtoModel;

@@ -20,9 +20,5 @@ public class FuncionarioModel extends PessoaModel {
     @Embedded
     private PessoaModel pessoaModel;
     private String clt;
-    @Setter(AccessLevel.NONE)
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "funcionario_id",referencedColumnName = "id")
-    private List<PedidoModel> pedidoModels = new LinkedList<>();
     private boolean status;
 }
