@@ -2,7 +2,6 @@ package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
 import com.arnus.merceariaarnus.dto.FornecedorDTO;
-import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.FornecedorModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.CategoriaFornecedorRespository;
@@ -10,6 +9,8 @@ import com.arnus.merceariaarnus.repository.FornecedorRespository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class FornecedorService {
@@ -19,6 +20,17 @@ public class FornecedorService {
     @Autowired
     CategoriaFornecedorRespository categoriaFornecedorRespository;
 
+    public FornecedorModel findById(Integer id){
+        if (id == 0)
+            throw new IllegalArgumentException("ID do fornecedor não pode ser 0");
+
+        Optional<FornecedorModel> fornecedor = fornecedorRespository.findByIdAndStatusTrue(id);
+        if (!fornecedor.isPresent())
+            throw new IllegalArgumentException("ID do fornecedor não existe");
+
+        return fornecedor.get();
+    }
+
     public FornecedorDTO salvar(FornecedorDTO fornecedorDTO){
         return update(null, fornecedorDTO);
     }
@@ -26,9 +38,7 @@ public class FornecedorService {
     public FornecedorDTO update(Integer id, FornecedorDTO fornecedorDTO){
         FornecedorModel fornecedorModel = new FornecedorModel();
         if(id != null) {
-            verificarFornecedor(id);
-
-            fornecedorModel = fornecedorRespository.findByIdAndStatusTrue(id).get();
+            fornecedorModel = findById(id);
         }
 
         verificarIdCategoriaFornecedor(fornecedorDTO);
@@ -37,13 +47,6 @@ public class FornecedorService {
         fornecedorModel.setStatus(true);
         fornecedorRespository.save(fornecedorModel);
         return fornecedorDTO;
-    }
-
-    private void verificarFornecedor(Integer id) {
-        if (id == 0)
-            throw new IllegalArgumentException("ID do fornecedor não pode ser 0");
-        if (!fornecedorRespository.findByIdAndStatusTrue(id).isPresent())
-            throw new IllegalArgumentException("ID do fornecedor não existe");
     }
 
     private void verificarIdCategoriaFornecedor(FornecedorDTO fornecedorDTO) {
@@ -65,8 +68,7 @@ public class FornecedorService {
     }
 
     public void delete(Integer id){
-        verificarFornecedor(id);
-        FornecedorModel fornecedor = fornecedorRespository.findByIdAndStatusTrue(id).get();
+        FornecedorModel fornecedor = findById(id);
         fornecedor.setStatus(false);
         fornecedorRespository.save(fornecedor);
     }

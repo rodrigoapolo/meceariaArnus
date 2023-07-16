@@ -1,9 +1,7 @@
 package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
-import com.arnus.merceariaarnus.dto.CategoriaProdutoDTO;
 import com.arnus.merceariaarnus.dto.ClienteDTO;
-import com.arnus.merceariaarnus.model.CategoriaProdutoModel;
 import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.ClienteRespository;
@@ -11,10 +9,23 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ClienteService {
     @Autowired
     ClienteRespository clienteRespository;
+
+    public ClienteModel findById(Integer id){
+        if(id == 0)
+            throw new IllegalArgumentException("ID do cliente não pode ser 0");
+
+        Optional<ClienteModel> cliente = clienteRespository.findByIdAndStatusTrue(id);
+        if(!cliente.isPresent())
+            throw new IllegalArgumentException("ID do cliente não existe");
+
+        return cliente.get();
+    }
 
     public ClienteDTO salvar(ClienteDTO clienteDTO){
         return update(null,clienteDTO);
@@ -23,22 +34,13 @@ public class ClienteService {
     public ClienteDTO update(Integer id, ClienteDTO clienteDTO){
         ClienteModel clienteModel = new ClienteModel();
         if(id != null){
-            verificarCliente(id);
-
-            clienteModel = clienteRespository.findByIdAndStatusTrue(id).get();
+            clienteModel = findById(id);
         }
 
         criarCliente(clienteModel, clienteDTO);
         clienteModel.setStatus(true);
         clienteRespository.save(clienteModel);
         return clienteDTO;
-    }
-
-    private void verificarCliente(Integer id) {
-        if(id == 0)
-            throw new IllegalArgumentException("ID do cliente não pode ser 0");
-        if(!clienteRespository.findByIdAndStatusTrue(id).isPresent())
-            throw new IllegalArgumentException("ID do cliente não existe");
     }
 
     private void criarCliente(ClienteModel clienteModel, ClienteDTO clienteDTO){
@@ -53,8 +55,7 @@ public class ClienteService {
     }
 
     public void delete(Integer id){
-        verificarCliente(id);
-        ClienteModel cliente = clienteRespository.findByIdAndStatusTrue(id).get();
+        ClienteModel cliente = findById(id);
         cliente.setStatus(false);
         clienteRespository.save(cliente);
     }

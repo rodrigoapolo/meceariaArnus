@@ -2,7 +2,6 @@ package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
 import com.arnus.merceariaarnus.dto.FuncionarioDTO;
-import com.arnus.merceariaarnus.model.FornecedorModel;
 import com.arnus.merceariaarnus.model.FuncionarioModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
 import com.arnus.merceariaarnus.repository.FuncionarioRespository;
@@ -10,11 +9,24 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class FuncionarioService {
 
     @Autowired
     FuncionarioRespository funcionarioRespository;
+
+    public FuncionarioModel findById(Integer id){
+        if (id == 0)
+            throw new IllegalArgumentException("ID do funcionario não pode ser 0");
+
+        Optional <FuncionarioModel> funcionario = funcionarioRespository.findByIdAndStatusTrue(id);
+        if (!funcionarioRespository.findByIdAndStatusTrue(id).isPresent())
+            throw new IllegalArgumentException("ID do funcionario não existe");
+
+        return funcionario.get();
+    }
 
     public FuncionarioDTO salvar(FuncionarioDTO funcionarioDTO){
         return update(null, funcionarioDTO);
@@ -23,22 +35,13 @@ public class FuncionarioService {
     public FuncionarioDTO update(Integer id, FuncionarioDTO funcionarioDTO){
         FuncionarioModel funcionarioModel = new FuncionarioModel();
         if(id != null) {
-            verificarFuncionario(id);
-
-            funcionarioModel = funcionarioRespository.findByIdAndStatusTrue(id).get();
+            funcionarioModel = findById(id);
         }
 
         criarFuncionario(funcionarioModel, funcionarioDTO);
         funcionarioModel.setStatus(true);
         funcionarioRespository.save(funcionarioModel);
         return funcionarioDTO;
-    }
-
-    private void verificarFuncionario(Integer id) {
-        if (id == 0)
-            throw new IllegalArgumentException("ID do funcionario não pode ser 0");
-        if (!funcionarioRespository.findByIdAndStatusTrue(id).isPresent())
-            throw new IllegalArgumentException("ID do funcionario não existe");
     }
 
     private void criarFuncionario(FuncionarioModel funcionarioModel, FuncionarioDTO funcionarioDTO){
@@ -53,8 +56,7 @@ public class FuncionarioService {
     }
 
     public void delete(Integer id){
-        verificarFuncionario(id);
-        FuncionarioModel funcionario = funcionarioRespository.findByIdAndStatusTrue(id).get();
+        FuncionarioModel funcionario = findById(id);
         funcionario.setStatus(false);
         funcionarioRespository.save(funcionario);
     }

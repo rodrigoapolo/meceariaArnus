@@ -7,11 +7,22 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CategoriaFornecedorService {
     @Autowired
     CategoriaFornecedorRespository categoriaFornecedorRespository;
 
+    public CategoriaFornecedorModel findById(Integer id){
+        if(id == 0)
+            throw new IllegalArgumentException("ID da categoria fornecedor não pode ser 0");
+
+        Optional<CategoriaFornecedorModel> categoria = categoriaFornecedorRespository.findByIdAndStatusTrue(id);
+        if(!categoria.isPresent())
+            throw new IllegalArgumentException("ID da categoria fornecedor não existe");
+        return categoria.get();
+    }
     public CategoriaFornecedorDTO salvar(CategoriaFornecedorDTO categoriaDto){
         return update(null,categoriaDto);
     }
@@ -19,9 +30,7 @@ public class CategoriaFornecedorService {
     public CategoriaFornecedorDTO update(Integer id, CategoriaFornecedorDTO categoriaDTO){
         CategoriaFornecedorModel categoriaModel = new CategoriaFornecedorModel();
         if(id != null){
-            verificarCategoria(id);
-
-            categoriaModel = categoriaFornecedorRespository.findByIdAndStatusTrue(id).get();
+            categoriaModel = findById(id);
         }
 
         BeanUtils.copyProperties(categoriaDTO, categoriaModel);
@@ -31,16 +40,8 @@ public class CategoriaFornecedorService {
         return categoriaDTO;
     }
 
-    private void verificarCategoria(Integer id) {
-        if(id == 0)
-            throw new IllegalArgumentException("ID da categoria fornecedor não pode ser 0");
-        if(!categoriaFornecedorRespository.findByIdAndStatusTrue(id).isPresent())
-            throw new IllegalArgumentException("ID da categoria fornecedor não existe");
-    }
-
     public void delete(Integer id){
-        verificarCategoria(id);
-        CategoriaFornecedorModel categoria = categoriaFornecedorRespository.findByIdAndStatusTrue(id).get();
+        CategoriaFornecedorModel categoria = findById(id);
         categoria.setStatus(false);
         categoriaFornecedorRespository.save(categoria);
     }
