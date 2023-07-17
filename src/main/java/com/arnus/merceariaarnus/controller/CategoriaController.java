@@ -13,24 +13,16 @@ public class CategoriaController {
     @Autowired
     CategoriaService categoriaService;
 
-/*
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoriaProdutoDTO> getCategoriaId(@PathVariable Integer id){
-        CategoriaProdutoDTO categoriaDTO = categoriaService.findById(id);
-        return ResponseEntity.ok().body(categoriaDTO);
-    }
-*/
-
     @PostMapping()
     public ResponseEntity<CategoriaProdutoDTO> salvar(@RequestBody CategoriaProdutoDTO categoria){
         CategoriaProdutoDTO categoriaDTO = categoriaService.salvar(categoria);
-        return ResponseEntity.ok().body(categoriaDTO);
+        return ResponseEntity.status(201).body(categoriaDTO);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<CategoriaProdutoDTO> update(@PathVariable Integer id, @RequestBody CategoriaProdutoDTO categoria){
         CategoriaProdutoDTO categoriaDTO = categoriaService.update(id, categoria);
-        return ResponseEntity.ok().body(categoriaDTO);
+        return ResponseEntity.status(201).body(categoriaDTO);
     }
 
     @DeleteMapping("/{id}")

@@ -16,13 +16,13 @@ public class FornecedorController {
     @PostMapping()
     public ResponseEntity<FornecedorDTO> salvar(@RequestBody FornecedorDTO fornecedor){
         FornecedorDTO fornecedorDTO = fornecedorService.salvar(fornecedor);
-        return ResponseEntity.ok().body(fornecedorDTO);
+        return ResponseEntity.status(201).body(fornecedorDTO);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<FornecedorDTO> update(@PathVariable Integer id, @RequestBody FornecedorDTO fornecedor){
         FornecedorDTO fornecedorDTO = fornecedorService.update(id, fornecedor);
-        return ResponseEntity.ok().body(fornecedorDTO);
+        return ResponseEntity.status(201).body(fornecedorDTO);
     }
 
     @DeleteMapping("/{id}")

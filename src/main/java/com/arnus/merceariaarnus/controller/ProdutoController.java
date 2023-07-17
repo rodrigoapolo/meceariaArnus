@@ -20,13 +20,13 @@ public class ProdutoController {
     @PostMapping()
     public ResponseEntity<ProdutoDTO> salvar(@RequestBody ProdutoDTO produto){
         ProdutoDTO produtoDTO = produtoService.salvar(produto);
-        return ResponseEntity.ok().body(produtoDTO);
+        return ResponseEntity.status(201).body(produtoDTO);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<ProdutoDTO> update(@PathVariable Integer id, @RequestBody ProdutoDTO produto){
         ProdutoDTO produtoDTO = produtoService.update(id, produto);
-        return ResponseEntity.ok().body(produtoDTO);
+        return ResponseEntity.status(201).body(produtoDTO);
     }
 
     @DeleteMapping("/{id}")

@@ -18,13 +18,13 @@ public class ClienteController {
     @PostMapping()
     public ResponseEntity<ClienteDTO> salvar(@RequestBody ClienteDTO cliente){
         ClienteDTO clienteDTO = clienteService.salvar(cliente);
-        return ResponseEntity.ok().body(clienteDTO);
+        return ResponseEntity.status(201).body(clienteDTO);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<ClienteDTO> update(@PathVariable Integer id, @RequestBody ClienteDTO cliente){
         ClienteDTO clienteDTO = clienteService.update(id, cliente);
-        return ResponseEntity.ok().body(clienteDTO);
+        return ResponseEntity.status(201).body(clienteDTO);
     }
 
     @DeleteMapping("/{id}")

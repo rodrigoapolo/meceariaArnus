@@ -16,13 +16,13 @@ public class FuncionarioController {
     @PostMapping()
     public ResponseEntity<FuncionarioDTO> salvar(@RequestBody FuncionarioDTO funcionario){
         FuncionarioDTO funcionarioDTO = funcionarioService.salvar(funcionario);
-        return ResponseEntity.ok().body(funcionarioDTO);
+        return ResponseEntity.status(201).body(funcionarioDTO);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<FuncionarioDTO> update(@PathVariable Integer id, @RequestBody FuncionarioDTO funcionario){
         FuncionarioDTO funcionarioDTO = funcionarioService.update(id, funcionario);
-        return ResponseEntity.ok().body(funcionarioDTO);
+        return ResponseEntity.status(201).body(funcionarioDTO);
     }
 
     @DeleteMapping("/{id}")
