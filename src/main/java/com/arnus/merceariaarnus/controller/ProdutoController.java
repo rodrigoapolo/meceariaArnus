@@ -1,6 +1,7 @@
 package com.arnus.merceariaarnus.controller;
 
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
+import com.arnus.merceariaarnus.dto.view.ProdutoView;
 import com.arnus.merceariaarnus.dto.view.ProdutosMiasVendidos;
 import com.arnus.merceariaarnus.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,11 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutosMiasVendidos>> consultarProdutosMaisVendios(){
         List<ProdutosMiasVendidos> produtosMiasVendidos = produtoService.consultarProdutosMaisVendios();
         return ResponseEntity.ok().body(produtosMiasVendidos);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<ProdutoView>> buscarProdutos(){
+        List<ProdutoView> produtos = produtoService.buscarProdutos();
+        return ResponseEntity.ok().body(produtos);
     }
 }

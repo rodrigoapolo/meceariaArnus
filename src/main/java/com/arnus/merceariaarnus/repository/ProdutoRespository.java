@@ -1,5 +1,6 @@
 package com.arnus.merceariaarnus.repository;
 
+import com.arnus.merceariaarnus.dto.view.ProdutoView;
 import com.arnus.merceariaarnus.dto.view.ProdutosMiasVendidos;
 import com.arnus.merceariaarnus.model.ClienteModel;
 import com.arnus.merceariaarnus.model.ProdutoModel;
@@ -21,4 +22,7 @@ public interface ProdutoRespository extends JpaRepository<ProdutoModel, Integer>
             "GROUP BY p.id, cp.id \n" +
             "ORDER BY totalVendido DESC",nativeQuery = true)
     List<ProdutosMiasVendidos> consultarProdutosMaisVendios();
+
+    @Query("SELECT p.id as id, p.nome as nome, p.preco as preco, p.categoriaModel.nome as categoriaProduto FROM ProdutoModel p")
+    List<ProdutoView> buscarProdutos();
 }

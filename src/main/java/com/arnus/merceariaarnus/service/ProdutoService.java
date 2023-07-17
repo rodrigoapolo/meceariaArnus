@@ -1,6 +1,7 @@
 package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
+import com.arnus.merceariaarnus.dto.view.ProdutoView;
 import com.arnus.merceariaarnus.dto.view.ProdutosMiasVendidos;
 import com.arnus.merceariaarnus.model.EmailModel;
 import com.arnus.merceariaarnus.model.FornecedorModel;
@@ -105,4 +106,9 @@ public class ProdutoService {
     public List<ProdutosMiasVendidos> consultarProdutosMaisVendios(){
         return produtoRespository.consultarProdutosMaisVendios();
     }
+
+    public List<ProdutoView> buscarProdutos(){
+        return produtoRespository.buscarProdutos();
+    }
+
 }
