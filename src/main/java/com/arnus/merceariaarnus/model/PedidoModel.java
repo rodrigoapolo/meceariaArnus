@@ -19,8 +19,10 @@ public class PedidoModel {
     private Integer id;
     private Double total;
     private LocalDate data;
-    @Setter(AccessLevel.NONE)
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pedido_id", referencedColumnName = "id")
-    private List<InterPedidoModel> intensPedidos = new LinkedList<>();
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id",referencedColumnName = "id")
+    private ClienteModel clienteModel;
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "funcionario_id",referencedColumnName = "id")
+    private FuncionarioModel funcionarioModel;
 }

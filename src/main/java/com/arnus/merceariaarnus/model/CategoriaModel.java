@@ -8,11 +8,12 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "tb_CategoriaFornecedor")
-public class CategoriaFornecedorModel {
+@Table(name = "tb_Categoria")
+public class CategoriaModel {
     @Id
     @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private boolean status;
 }

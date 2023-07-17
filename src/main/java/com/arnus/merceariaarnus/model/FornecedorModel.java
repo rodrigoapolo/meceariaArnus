@@ -18,6 +18,7 @@ public class FornecedorModel {
     private PessoaModel pessoaModel;
     private String cnpj;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_fornecedor_id", referencedColumnName = "id")
-    CategoriaFornecedorModel categoriaFornecedor;
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    CategoriaModel categoriaFornecedor;
+    private boolean status;
 }

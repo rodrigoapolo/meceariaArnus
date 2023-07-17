@@ -1,11 +1,14 @@
 package com.arnus.merceariaarnus.controller;
 
-import com.arnus.merceariaarnus.dto.CategoriaProdutoDTO;
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
+import com.arnus.merceariaarnus.dto.view.ProdutoView;
+import com.arnus.merceariaarnus.dto.view.ProdutosMiasVendidos;
 import com.arnus.merceariaarnus.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/produto")
@@ -15,15 +18,32 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @PostMapping()
-    public ResponseEntity<ProdutoDTO> salvarProduto(@RequestBody ProdutoDTO produto){
+    public ResponseEntity<ProdutoDTO> salvar(@RequestBody ProdutoDTO produto){
         ProdutoDTO produtoDTO = produtoService.salvar(produto);
-        return ResponseEntity.ok().body(produtoDTO);
+        return ResponseEntity.status(201).body(produtoDTO);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<ProdutoDTO> update(@PathVariable Integer id, @RequestBody ProdutoDTO produto){
         ProdutoDTO produtoDTO = produtoService.update(id, produto);
-        return ResponseEntity.ok().body(produtoDTO);
+        return ResponseEntity.status(201).body(produtoDTO);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        produtoService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/produtos-mais-vendios")
+    public ResponseEntity<List<ProdutosMiasVendidos>> consultarProdutosMaisVendios(){
+        List<ProdutosMiasVendidos> produtosMiasVendidos = produtoService.consultarProdutosMaisVendios();
+        return ResponseEntity.ok().body(produtosMiasVendidos);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<ProdutoView>> buscarProdutos(){
+        List<ProdutoView> produtos = produtoService.buscarProdutos();
+        return ResponseEntity.ok().body(produtos);
+    }
 }
