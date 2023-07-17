@@ -2,7 +2,6 @@ package com.arnus.merceariaarnus.controller;
 
 import com.arnus.merceariaarnus.dto.ProdutoDTO;
 import com.arnus.merceariaarnus.dto.view.ProdutosMiasVendidos;
-import com.arnus.merceariaarnus.dto.view.TotalPedido;
 import com.arnus.merceariaarnus.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

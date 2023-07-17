@@ -17,8 +17,8 @@ public class EmailModel implements Serializable {
 
     @Id
     @Setter(AccessLevel.NONE)
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer emailId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
     private FornecedorModel ownerRef;

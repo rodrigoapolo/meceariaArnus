@@ -19,7 +19,7 @@ public class ProdutoService {
     @Autowired
     ProdutoRespository produtoRespository;
     @Autowired
-    CategoriaProdutoService categoriaProdutoService;
+    CategoriaService categoriaService;
     @Autowired
     FornecedorService fornecedorService;
     @Autowired
@@ -46,7 +46,7 @@ public class ProdutoService {
             produtoModel = findById(id);
         }
 
-        produtoModel.setCategoriaProdutoModel(categoriaProdutoService.findById(produtoDTO.getCategoriaProduto()));
+        produtoModel.setCategoriaModel(categoriaService.findById(produtoDTO.getCategoriaProduto()));
         produtoModel.setFornecedorModel(fornecedorService.findById(produtoDTO.getFornecedor()));
         BeanUtils.copyProperties(produtoDTO, produtoModel);
 

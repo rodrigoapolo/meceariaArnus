@@ -10,6 +10,6 @@ public class FornecedorDTO {
     private String telefone;
     private String email;
     private String cnpj;
-    private Integer categoriaFornecedor;
+    private Integer categoria;
     private EnderecoModel endereco;
 }

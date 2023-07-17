@@ -1,8 +1,8 @@
 package com.arnus.merceariaarnus.service;
 
 import com.arnus.merceariaarnus.dto.CategoriaProdutoDTO;
-import com.arnus.merceariaarnus.model.CategoriaProdutoModel;
-import com.arnus.merceariaarnus.repository.CategoriaProdutoRespository;
+import com.arnus.merceariaarnus.model.CategoriaModel;
+import com.arnus.merceariaarnus.repository.CategoriaRespository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CategoriaProdutoService {
+public class CategoriaService {
     @Autowired
-    CategoriaProdutoRespository categoriaProdutoRespository;
+    CategoriaRespository categoriaRespository;
 
-    public CategoriaProdutoModel findById(Integer id){
+    public CategoriaModel findById(Integer id){
         if(id == 0)
             throw new IllegalArgumentException("ID da categoria Produto não pode ser 0");
 
-        Optional <CategoriaProdutoModel> categoria = categoriaProdutoRespository.findByIdAndStatusTrue(id);
+        Optional <CategoriaModel> categoria = categoriaRespository.findByIdAndStatusTrue(id);
         if(!categoria.isPresent()) {
             throw new IllegalArgumentException("ID da categoria Produto não existe");
         }
@@ -30,7 +30,7 @@ public class CategoriaProdutoService {
     }
 
     public CategoriaProdutoDTO update( Integer id, CategoriaProdutoDTO categoriaDTO){
-        CategoriaProdutoModel categoriaModel = new CategoriaProdutoModel();
+        CategoriaModel categoriaModel = new CategoriaModel();
         if(id != null){
             categoriaModel = findById(id);
         }
@@ -38,14 +38,14 @@ public class CategoriaProdutoService {
         BeanUtils.copyProperties(categoriaDTO, categoriaModel);
 
         categoriaModel.setStatus(true);
-        categoriaProdutoRespository.save(categoriaModel);
+        categoriaRespository.save(categoriaModel);
         return categoriaDTO;
     }
 
 
     public void delete(Integer id){
-        CategoriaProdutoModel categoria = findById(id);
+        CategoriaModel categoria = findById(id);
         categoria.setStatus(false);
-        categoriaProdutoRespository.save(categoria);
+        categoriaRespository.save(categoria);
     }
 }

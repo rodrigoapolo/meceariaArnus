@@ -17,7 +17,7 @@ public interface ProdutoRespository extends JpaRepository<ProdutoModel, Integer>
     @Query(value = "SELECT p.nome AS produto, cp.nome AS categoria, SUM(ip.qtd) AS totalVendido\n" +
             "FROM tb_inste_pedido ip\n" +
             "INNER JOIN tb_produto p ON ip.produto_id = p.id\n" +
-            "INNER JOIN tb_categoria_produto cp ON p.categoria_produto_id  = cp.id \n" +
+            "INNER JOIN tb_categoria cp ON p.categoria_id  = cp.id \n" +
             "GROUP BY p.id, cp.id \n" +
             "ORDER BY totalVendido DESC",nativeQuery = true)
     List<ProdutosMiasVendidos> consultarProdutosMaisVendios();

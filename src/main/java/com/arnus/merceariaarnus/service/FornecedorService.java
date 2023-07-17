@@ -4,7 +4,6 @@ import com.arnus.merceariaarnus.Utils.FormatacaoCpfCnpj;
 import com.arnus.merceariaarnus.dto.FornecedorDTO;
 import com.arnus.merceariaarnus.model.FornecedorModel;
 import com.arnus.merceariaarnus.model.PessoaModel;
-import com.arnus.merceariaarnus.repository.CategoriaFornecedorRespository;
 import com.arnus.merceariaarnus.repository.FornecedorRespository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class FornecedorService {
     @Autowired
     FornecedorRespository fornecedorRespository;
     @Autowired
-    CategoriaFornecedorRespository categoriaFornecedorRespository;
+    CategoriaService categoriaService;
 
     public FornecedorModel findById(Integer id){
         if (id == 0)
@@ -41,24 +40,16 @@ public class FornecedorService {
             fornecedorModel = findById(id);
         }
 
-        verificarIdCategoriaFornecedor(fornecedorDTO);
-
         criarFornecedor(fornecedorModel, fornecedorDTO);
         fornecedorModel.setStatus(true);
         fornecedorRespository.save(fornecedorModel);
         return fornecedorDTO;
     }
 
-    private void verificarIdCategoriaFornecedor(FornecedorDTO fornecedorDTO) {
-        if(!categoriaFornecedorRespository.findByIdAndStatusTrue(fornecedorDTO.getCategoriaFornecedor()).isPresent())
-            throw new IllegalArgumentException("ID da categoria fornecedor não existe");
-    }
-
     private void criarFornecedor(FornecedorModel fornecedorModel, FornecedorDTO fornecedorDTO){
         fornecedorModel.setPessoaModel(criarPessoa(fornecedorDTO));
         fornecedorModel.setCnpj(FormatacaoCpfCnpj.formatarCpfCnpj(fornecedorDTO.getCnpj(), "CNPJ invalido"));
-        fornecedorModel.setCategoriaFornecedor(categoriaFornecedorRespository
-                .findByIdAndStatusTrue(fornecedorDTO.getCategoriaFornecedor()).get());
+        fornecedorModel.setCategoriaFornecedor(categoriaService.findById(fornecedorDTO.getCategoria()));
     }
 
     private PessoaModel criarPessoa(FornecedorDTO fornecedorDTO){
